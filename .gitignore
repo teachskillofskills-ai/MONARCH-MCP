@@ -1,0 +1,9 @@
+node_modules
+.next
+out
+.env*.local
+.env.production-secrets
+data/*.db
+data/*.db-*
+*.tsbuildinfo
+next-env.d.ts

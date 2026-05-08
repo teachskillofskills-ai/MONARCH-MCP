@@ -1,0 +1,32 @@
+# Render blueprint for Project Monarch.
+# Documents the service shape; the service was created via API by the deploy script.
+services:
+  - type: web
+    name: monarch
+    runtime: node
+    region: singapore
+    plan: starter
+    branch: main
+    rootDir: .
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /login
+    autoDeploy: true
+    disk:
+      name: monarch-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: DATABASE_PATH
+        value: /data/monarch.db
+      - key: ADMIN_USERNAME
+        value: monarch
+      - key: ADMIN_PASSWORD
+        value: monarch
+      # The following must be set via Render dashboard (or API on first deploy):
+      # MONARCH_MASTER_KEY, SESSION_SECRET, LINKEDIN_ACCESS_TOKEN, GOOGLE_OAUTH_*,
+      # GOOGLE_ADS_DEVELOPER_TOKEN/LOGIN/DEFAULT_CUSTOMER_ID, AWR_1ST_API_TOKEN, AWR_API_TOKEN,
+      # DATAFORSEO_AUTH_BASE64, GEMINI_API_KEY, OPENROUTER_API_KEY, BLOB_READ_WRITE_TOKEN,
+      # META_ACCESS_TOKEN, META_GRAPH_API_VERSION
