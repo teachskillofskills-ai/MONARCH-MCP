@@ -31,7 +31,7 @@ function SidebarItem({
   );
 }
 
-export default function Sidebar({ mcpCount }: { mcpCount: number }) {
+export default function Sidebar({ mcpCount, host }: { mcpCount: number; host?: string }) {
   const pathname = usePathname();
   const groups: { label: string; items: { href: string; icon: ReactNode; label: string; count?: ReactNode }[] }[] = [
     { label: "Workspace", items: [
@@ -102,10 +102,10 @@ export default function Sidebar({ mcpCount }: { mcpCount: number }) {
           ALL SYSTEMS NOMINAL
         </div>
         <div style={{ fontSize: 12.5, lineHeight: 1.45, color: "var(--fg)" }}>
-          {mcpCount} MCPs · <span style={{ color: "var(--fg-muted)" }}>local instance</span>
+          {mcpCount} MCPs · <span style={{ color: "var(--fg-muted)" }}>{host && !host.startsWith("localhost") ? "live" : "local instance"}</span>
         </div>
-        <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "var(--fg-muted)", marginTop: 6 }}>
-          localhost:4000
+        <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "var(--fg-muted)", marginTop: 6, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+          {host || "localhost:4000"}
         </div>
       </div>
     </aside>

@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import Sidebar from "@/components/Sidebar";
 import Topbar from "@/components/Topbar";
 import { getCurrentUser } from "@/lib/auth";
@@ -12,6 +13,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   const db = getDb();
   const { count } = db.prepare("SELECT COUNT(*) as count FROM mcps").get() as { count: number };
+  const h = await headers();
+  const host = h.get("x-forwarded-host") || h.get("host") || "localhost:4000";
 
   return (
     <div style={{
@@ -22,7 +25,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       minHeight: "100vh",
       background: "var(--bg-muted)",
     }}>
-      <Sidebar mcpCount={count}/>
+      <Sidebar mcpCount={count} host={host}/>
       <Topbar username={user.username}/>
       <main style={{ gridArea: "main", overflow: "auto" }}>{children}</main>
     </div>

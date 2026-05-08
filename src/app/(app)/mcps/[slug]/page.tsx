@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
 import { getMcpBySlug } from "@/lib/mcps";
 import { updateMcpMeta, updateMcpSecrets } from "@/lib/actions/mcp";
 import { Card, Pill, Btn, Field } from "@/components/ui";
@@ -18,7 +19,10 @@ export default async function McpDetailPage({ params }: { params: Promise<{ slug
   if (!data) notFound();
   const { mcp, template, secrets, config, tools } = data;
 
-  const localUrl = `http://localhost:4000/api/mcp/${mcp.slug}`;
+  const h = await headers();
+  const host = h.get("x-forwarded-host") || h.get("host") || "localhost:4000";
+  const proto = h.get("x-forwarded-proto") || (host.startsWith("localhost") ? "http" : "https");
+  const localUrl = `${proto}://${host}/api/mcp/${mcp.slug}`;
   const enabledTools = tools.filter((t) => t.enabled);
 
   return (
