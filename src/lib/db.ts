@@ -2,17 +2,20 @@ import Database from "better-sqlite3";
 import path from "node:path";
 import fs from "node:fs";
 
-const DB_PATH = process.env.DATABASE_PATH || path.join(process.cwd(), "data", "monarch.db");
-fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
-
 declare global {
   // eslint-disable-next-line no-var
   var __monarchDb: Database.Database | undefined;
 }
 
+function resolveDbPath(): string {
+  return process.env.DATABASE_PATH || path.join(process.cwd(), "data", "monarch.db");
+}
+
 export function getDb(): Database.Database {
   if (!global.__monarchDb) {
-    const db = new Database(DB_PATH);
+    const dbPath = resolveDbPath();
+    fs.mkdirSync(path.dirname(dbPath), { recursive: true });
+    const db = new Database(dbPath);
     db.pragma("journal_mode = WAL");
     db.pragma("foreign_keys = ON");
 
