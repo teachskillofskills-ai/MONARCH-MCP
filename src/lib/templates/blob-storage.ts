@@ -31,12 +31,11 @@ const handlers: Record<string, ToolHandler> = {
     write_enabled: false,
     delete_enabled: true,
   }),
-  blob_list: async (args) => {
+  blob_list: async (args, ctx) => {
     const params = new URLSearchParams();
     if (args.prefix) params.set("prefix", String(args.prefix));
     if (args.limit) params.set("limit", String(args.limit));
     if (args.cursor) params.set("cursor", String(args.cursor));
-    const ctx = arguments[1] as Ctx;
     return blobApi(ctx, "GET", `?${params}`);
   },
   blob_head: async (args, ctx) => {
@@ -46,15 +45,6 @@ const handlers: Record<string, ToolHandler> = {
   blob_delete: async (args, ctx) => {
     return blobApi(ctx, "POST", "/delete", JSON.stringify({ urls: [args.url] }), { "Content-Type": "application/json" });
   },
-};
-
-// Fix the closure issue in blob_list by overriding it
-handlers.blob_list = async (args, ctx) => {
-  const params = new URLSearchParams();
-  if (args.prefix) params.set("prefix", String(args.prefix));
-  if (args.limit) params.set("limit", String(args.limit));
-  if (args.cursor) params.set("cursor", String(args.cursor));
-  return blobApi(ctx, "GET", `?${params}`);
 };
 
 const template: Template = {
