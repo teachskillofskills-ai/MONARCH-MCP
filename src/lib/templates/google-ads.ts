@@ -112,6 +112,14 @@ const template: Template = {
   category: "Ads",
   version: "1.0",
   auth: "OAuth refresh token",
+  setupUrl: "https://developers.google.com/google-ads/api/docs/oauth/overview",
+  setupSteps: [
+    "Apply for a Google Ads Developer Token at https://ads.google.com/aw/apicenter (Basic access is enough for read-only).",
+    "Go to https://console.cloud.google.com/apis/credentials → create OAuth 2.0 Client ID (type: Desktop app).",
+    "Use the OAuth Playground (https://developers.google.com/oauthplayground) to get a refresh token for scope https://www.googleapis.com/auth/adwords. Set the playground's settings to use 'Your own OAuth credentials' first.",
+    "Find your manager (MCC) Customer ID in Google Ads (top-right, format: 123-456-7890).",
+    "Paste all four values below: client ID, client secret, refresh token, developer token.",
+  ],
   secretKeys: [
     { key: "GOOGLE_OAUTH_CLIENT_ID", label: "OAuth Client ID" },
     { key: "GOOGLE_OAUTH_CLIENT_SECRET", label: "OAuth Client Secret" },

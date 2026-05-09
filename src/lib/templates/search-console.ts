@@ -79,6 +79,14 @@ const template: Template = {
   category: "SEO",
   version: "1.0",
   auth: "OAuth refresh token",
+  setupUrl: "https://search.google.com/search-console",
+  setupSteps: [
+    "Verify your sites in Google Search Console first.",
+    "Enable the Search Console API in https://console.cloud.google.com/apis/library.",
+    "Create OAuth Client ID (Desktop app) and use the OAuth Playground with scope https://www.googleapis.com/auth/webmasters.readonly.",
+    "Copy the refresh token. (The same Google OAuth credential can power GA4/Ads/GSC.)",
+    "Paste client ID, client secret, refresh token below.",
+  ],
   secretKeys: [
     { key: "GOOGLE_OAUTH_CLIENT_ID", label: "OAuth Client ID" },
     { key: "GOOGLE_OAUTH_CLIENT_SECRET", label: "OAuth Client Secret" },

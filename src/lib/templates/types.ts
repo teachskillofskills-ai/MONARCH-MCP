@@ -21,6 +21,10 @@ export type Template = {
   version: string;
   /** Auth scheme label, e.g. "OAuth", "API key". */
   auth: string;
+  /** Where to obtain credentials — direct link to the right page. */
+  setupUrl: string;
+  /** Numbered, plain-language steps to obtain the credentials. */
+  setupSteps: string[];
   secretKeys: { key: string; label: string; helpText?: string }[];
   configKeys: { key: string; label: string; defaultValue?: string; helpText?: string }[];
   tools: ToolDef[];

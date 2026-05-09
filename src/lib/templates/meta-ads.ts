@@ -142,6 +142,15 @@ const template: Template = {
   category: "Ads",
   version: "1.0",
   auth: "Long-lived access token",
+  setupUrl: "https://developers.facebook.com/apps",
+  setupSteps: [
+    "Go to Meta for Developers → Apps → My Apps → create a 'Business' type app.",
+    "Add the 'Marketing API' product to the app.",
+    "Open Tools → Graph API Explorer, pick your app + 'Get User Access Token'.",
+    "Select scopes: ads_read, read_insights, business_management.",
+    "Paste the short-lived token into the Access Token Debugger and click 'Extend Access Token' to get a 60-day version.",
+    "Copy the long-lived token and paste it below.",
+  ],
   secretKeys: [
     { key: "META_ACCESS_TOKEN", label: "Access Token", helpText: "Long-lived Meta Marketing API access token (ads_read scope)." },
   ],

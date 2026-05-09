@@ -107,6 +107,101 @@ export const Brand = {
       <path d="M12 14v4a3 3 0 0 0 3 3"/>
     </svg>
   ),
+  OpenAI: ({ size = 24 }: MarkProps) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="#10A37F">
+      <path d="M22 9.7a5.5 5.5 0 0 0-.5-4.5 5.6 5.6 0 0 0-6-2.7 5.6 5.6 0 0 0-9.5 2 5.5 5.5 0 0 0-3.7 2.7 5.6 5.6 0 0 0 .7 6.6 5.5 5.5 0 0 0 .5 4.5 5.6 5.6 0 0 0 6 2.7 5.5 5.5 0 0 0 4.2 1.9 5.6 5.6 0 0 0 5.3-3.9 5.5 5.5 0 0 0 3.7-2.7 5.6 5.6 0 0 0-.7-6.6zm-8.3 11.6a4.1 4.1 0 0 1-2.7-1l.1-.1 4.5-2.6a.7.7 0 0 0 .4-.6v-6.4l1.9 1.1V17a4.2 4.2 0 0 1-4.2 4.2zM4.6 17.7a4.1 4.1 0 0 1-.5-2.8l.1.1 4.5 2.6a.7.7 0 0 0 .8 0l5.5-3.2v2.2L10.5 19a4.2 4.2 0 0 1-5.9-1.3zm-1.2-9.7a4.1 4.1 0 0 1 2.2-1.8V12a.7.7 0 0 0 .4.6l5.5 3.2-1.9 1.1L5 14.3a4.2 4.2 0 0 1-1.6-5.7zm15.5 3.6L13.4 8.4l1.9-1.1 4.6 2.6a4.2 4.2 0 0 1-.6 7.5v-5.5a.7.7 0 0 0-.4-.6zm1.9-2.8h-.1l-4.5-2.6a.7.7 0 0 0-.8 0l-5.5 3.2V7.3l4.5-2.6a4.2 4.2 0 0 1 6.4 4.1zm-12 3.9-2-1.1V5a4.2 4.2 0 0 1 6.9-3.2l-.1.1L9 4.5a.7.7 0 0 0-.4.6zm1.1-2.3 2.5-1.4 2.5 1.4v2.8L12 14.3l-2.5-1.4z"/>
+    </svg>
+  ),
+  Anthropic: ({ size = 24 }: MarkProps) => (
+    <svg width={size} height={size} viewBox="0 0 24 24">
+      <rect width="24" height="24" rx="4" fill="#D97757"/>
+      <path d="M9.4 6h2.4l4.5 12h-2.5l-1-2.7H8.4L7.4 18H5zm-.3 7h3l-1.5-4.2z" fill="#fff"/>
+    </svg>
+  ),
+  Notion: ({ size = 24 }: MarkProps) => (
+    <svg width={size} height={size} viewBox="0 0 24 24">
+      <rect width="24" height="24" rx="4" fill="#fff" stroke="#0a0a0b" strokeWidth="1.5"/>
+      <path d="M7 6h2l5 8.5V6h2v12h-2L9 9.5V18H7z" fill="#0a0a0b"/>
+    </svg>
+  ),
+  Airtable: ({ size = 24 }: MarkProps) => (
+    <svg width={size} height={size} viewBox="0 0 24 24">
+      <path d="M3 8l9-3 9 3-9 3z" fill="#FCB400"/>
+      <path d="M21 9.5v6L13 19v-6.5z" fill="#18BFFF"/>
+      <path d="M3 9.5l8 3V19l-8-3.5z" fill="#F82B60"/>
+      <rect x="14" y="13" width="3" height="2.5" fill="#fff"/>
+    </svg>
+  ),
+  GitHub: ({ size = 24 }: MarkProps) => (
+    <svg width={size} height={size} viewBox="0 0 24 24">
+      <rect width="24" height="24" rx="4" fill="#0a0a0b"/>
+      <path d="M12 5a7 7 0 0 0-2.2 13.6c.3.1.5-.2.5-.4v-1.5c-2 .4-2.4-.9-2.4-.9-.3-.8-.8-1-.8-1-.7-.5.1-.5.1-.5.7 0 1.1.8 1.1.8.6 1.1 1.7.8 2.1.6 0-.5.3-.8.5-1-1.6-.2-3.2-.8-3.2-3.6 0-.8.3-1.4.7-2-.1-.2-.3-.9.1-1.9 0 0 .6-.2 2 .8a7 7 0 0 1 3.6 0c1.4-1 2-.8 2-.8.4 1 .2 1.7.1 1.9.4.5.7 1.2.7 2 0 2.8-1.7 3.4-3.3 3.6.3.2.5.7.5 1.4v2.1c0 .2.1.5.5.4A7 7 0 0 0 12 5z" fill="#fff"/>
+    </svg>
+  ),
+  Razorpay: ({ size = 24 }: MarkProps) => (
+    <svg width={size} height={size} viewBox="0 0 24 24">
+      <rect width="24" height="24" rx="4" fill="#3395FF"/>
+      <path d="M5 19l5-14h2l-3 9 5-1.5L11 19H8z" fill="#fff"/>
+    </svg>
+  ),
+  SendGrid: ({ size = 24 }: MarkProps) => (
+    <svg width={size} height={size} viewBox="0 0 24 24">
+      <rect x="3" y="3" width="9" height="9" fill="#1A82E2"/>
+      <rect x="12" y="3" width="9" height="9" fill="#9DD4F3"/>
+      <rect x="3" y="12" width="9" height="9" fill="#9DD4F3"/>
+      <rect x="12" y="12" width="9" height="9" fill="#1A82E2"/>
+    </svg>
+  ),
+  Resend: ({ size = 24 }: MarkProps) => (
+    <svg width={size} height={size} viewBox="0 0 24 24">
+      <rect width="24" height="24" rx="4" fill="#0a0a0b"/>
+      <path d="M6 7h7c2 0 3 1 3 2.5S15 12 13 12h-3l5 5h-2.5L8 12.5V17H6z" fill="#fff"/>
+    </svg>
+  ),
+  Stripe: ({ size = 24 }: MarkProps) => (
+    <svg width={size} height={size} viewBox="0 0 24 24">
+      <rect width="24" height="24" rx="4" fill="#635BFF"/>
+      <path d="M12.6 9.4c0-.5.4-.7 1.1-.7 1 0 2.3.3 3.3.8V6.7c-1.1-.4-2.2-.6-3.3-.6-2.7 0-4.5 1.4-4.5 3.7 0 3.7 5 3.1 5 4.7 0 .6-.5.8-1.3.8-1.1 0-2.5-.5-3.6-1V17c1.2.5 2.5.8 3.6.8 2.8 0 4.7-1.4 4.7-3.8 0-4-5-3.3-5-4.6z" fill="#fff"/>
+    </svg>
+  ),
+  Slack: ({ size = 24 }: MarkProps) => (
+    <svg width={size} height={size} viewBox="0 0 24 24">
+      <rect x="9.5" y="2" width="3" height="9" rx="1.5" fill="#36C5F0"/>
+      <rect x="11.5" y="13" width="9" height="3" rx="1.5" fill="#2EB67D"/>
+      <rect x="13" y="11.5" width="3" height="9" rx="1.5" transform="rotate(180 14.5 16)" fill="#ECB22E"/>
+      <rect x="3.5" y="8" width="9" height="3" rx="1.5" transform="rotate(180 8 9.5)" fill="#E01E5A"/>
+      <rect x="2" y="11.5" width="3" height="3" rx="1.5" fill="#36C5F0"/>
+      <rect x="11.5" y="2" width="3" height="3" rx="1.5" fill="#2EB67D"/>
+      <rect x="19" y="9.5" width="3" height="3" rx="1.5" fill="#ECB22E"/>
+      <rect x="9.5" y="19" width="3" height="3" rx="1.5" fill="#E01E5A"/>
+    </svg>
+  ),
+  HubSpot: ({ size = 24 }: MarkProps) => (
+    <svg width={size} height={size} viewBox="0 0 24 24">
+      <circle cx="14" cy="13" r="5" fill="none" stroke="#FF7A59" strokeWidth="2"/>
+      <circle cx="14" cy="13" r="1.5" fill="#FF7A59"/>
+      <circle cx="14" cy="5" r="1.6" fill="#FF7A59"/>
+      <path d="M14 6.6V8" stroke="#FF7A59" strokeWidth="2"/>
+      <path d="M5 5l5 4" stroke="#FF7A59" strokeWidth="2" strokeLinecap="round"/>
+      <circle cx="5" cy="5" r="1.6" fill="#FF7A59"/>
+    </svg>
+  ),
+  Mailchimp: ({ size = 24 }: MarkProps) => (
+    <svg width={size} height={size} viewBox="0 0 24 24">
+      <rect width="24" height="24" rx="4" fill="#FFE01B"/>
+      <circle cx="9" cy="11" r="1.6" fill="#241C15"/>
+      <circle cx="15" cy="11" r="1.6" fill="#241C15"/>
+      <path d="M8 16c1 1.4 5 1.4 6.5 0" stroke="#241C15" strokeWidth="1.6" fill="none" strokeLinecap="round"/>
+    </svg>
+  ),
+  Replicate: ({ size = 24 }: MarkProps) => (
+    <svg width={size} height={size} viewBox="0 0 24 24">
+      <rect width="24" height="24" rx="4" fill="#0a0a0b"/>
+      <rect x="5" y="6" width="14" height="2.4" fill="#fff"/>
+      <rect x="5" y="10" width="10" height="2.4" fill="#fff"/>
+      <rect x="5" y="14" width="6" height="2.4" fill="#fff"/>
+    </svg>
+  ),
 };
 
 export const BRAND_KEYS = Object.keys(Brand) as (keyof typeof Brand)[];

@@ -88,6 +88,13 @@ const template: Template = {
   category: "SEO",
   version: "1.0",
   auth: "API token",
+  setupUrl: "https://www.awrcloud.com/awr/account#api",
+  setupSteps: [
+    "Log in to AWR Cloud at https://www.awrcloud.com/.",
+    "Open Account → API.",
+    "Copy the API token (one per AWR account).",
+    "Paste it below.",
+  ],
   secretKeys: [
     { key: "AWR_API_TOKEN", label: "AWR API Token", helpText: "From AWR Cloud → Account → API." },
   ],

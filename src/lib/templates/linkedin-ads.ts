@@ -181,6 +181,14 @@ const template: Template = {
   category: "Ads",
   version: "1.0",
   auth: "OAuth · 60-day token",
+  setupUrl: "https://www.linkedin.com/developers/apps",
+  setupSteps: [
+    "Go to LinkedIn Developers → My Apps → create or open your app.",
+    "Add the 'Advertising API' product (Development Tier is fine; takes a few hours to approve).",
+    "Under 'Auth' tab add a redirect URI (e.g. http://localhost:3000/callback).",
+    "Run the OAuth flow with scopes: r_ads, r_ads_reporting, r_basicprofile.",
+    "Capture the access_token from the callback exchange (60-day life). Paste it below.",
+  ],
   secretKeys: [
     { key: "LINKEDIN_ACCESS_TOKEN", label: "Access Token", helpText: "Long-lived 60-day OAuth access token from LinkedIn Marketing Developer Platform." },
   ],

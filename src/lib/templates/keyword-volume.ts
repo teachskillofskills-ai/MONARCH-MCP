@@ -49,6 +49,13 @@ const template: Template = {
   category: "SEO",
   version: "1.0",
   auth: "Basic auth",
+  setupUrl: "https://app.dataforseo.com/api-access",
+  setupSteps: [
+    "Sign up at https://dataforseo.com/ (pay-as-you-go pricing).",
+    "Open API Access → copy your login email + API password.",
+    "On a terminal: echo -n 'your-email:your-api-password' | base64",
+    "Paste the resulting base64 string below.",
+  ],
   secretKeys: [
     { key: "DATAFORSEO_AUTH_BASE64", label: "Basic Auth (base64)", helpText: "base64('email:api-password') from DataForSEO dashboard." },
   ],

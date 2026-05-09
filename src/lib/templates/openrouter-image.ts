@@ -56,6 +56,13 @@ const template: Template = {
   category: "AI",
   version: "1.0",
   auth: "API key",
+  setupUrl: "https://openrouter.ai/keys",
+  setupSteps: [
+    "Sign up at https://openrouter.ai (you can use Google sign-in).",
+    "Add credits ($5 minimum) at https://openrouter.ai/credits.",
+    "Go to https://openrouter.ai/keys → Create API key.",
+    "Copy the key (starts with 'sk-or-v1-…') and paste below.",
+  ],
   secretKeys: [
     { key: "OPENROUTER_API_KEY", label: "OpenRouter API Key" },
   ],

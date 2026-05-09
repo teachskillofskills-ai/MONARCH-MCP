@@ -55,6 +55,13 @@ const template: Template = {
   category: "Storage",
   version: "1.0",
   auth: "Read-write token",
+  setupUrl: "https://vercel.com/dashboard/stores",
+  setupSteps: [
+    "Go to your Vercel dashboard → Storage tab.",
+    "Create a new Blob store (or open an existing one).",
+    "Open the store → Settings → 'Tokens' → create a Read/Write token.",
+    "Copy the token (starts with 'vercel_blob_rw_…') and paste below.",
+  ],
   secretKeys: [
     { key: "BLOB_READ_WRITE_TOKEN", label: "Blob R/W Token" },
   ],

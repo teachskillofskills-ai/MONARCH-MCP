@@ -111,6 +111,14 @@ const template: Template = {
   category: "Analytics",
   version: "1.0",
   auth: "OAuth refresh token",
+  setupUrl: "https://console.cloud.google.com/apis/library",
+  setupSteps: [
+    "In Google Cloud Console enable the 'Google Analytics Data API' and 'Google Analytics Admin API'.",
+    "Create OAuth 2.0 Client ID (type: Desktop app) under Credentials.",
+    "Use the OAuth Playground with scopes: analytics.readonly + analytics.edit (your own OAuth creds).",
+    "Copy the refresh_token from the playground response.",
+    "Paste client ID, client secret, refresh token below. (You can reuse the same Google OAuth across GA4/Search Console/Ads if scopes overlap.)",
+  ],
   secretKeys: [
     { key: "GOOGLE_OAUTH_CLIENT_ID", label: "OAuth Client ID" },
     { key: "GOOGLE_OAUTH_CLIENT_SECRET", label: "OAuth Client Secret" },

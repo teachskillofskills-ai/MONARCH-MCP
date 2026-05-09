@@ -46,6 +46,13 @@ const template: Template = {
   category: "AI",
   version: "1.0",
   auth: "API key",
+  setupUrl: "https://aistudio.google.com/apikey",
+  setupSteps: [
+    "Open Google AI Studio at https://aistudio.google.com/apikey.",
+    "Click 'Create API key' → choose a Google Cloud project (or create one).",
+    "Copy the key (starts with 'AQ.…' or similar).",
+    "Paste below. Free tier has rate limits but works for testing.",
+  ],
   secretKeys: [
     { key: "GEMINI_API_KEY", label: "Gemini API Key" },
   ],

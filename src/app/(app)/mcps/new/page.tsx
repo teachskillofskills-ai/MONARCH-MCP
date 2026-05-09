@@ -15,6 +15,8 @@ type Template = {
   category: string;
   version: string;
   auth: string;
+  setupUrl: string;
+  setupSteps: string[];
   secretKeys: { key: string; label: string; helpText?: string }[];
   configKeys: { key: string; label: string; defaultValue?: string; helpText?: string }[];
   toolCount: number;
@@ -149,6 +151,29 @@ export default function NewMcpPage() {
               </Field>
             </div>
           </Card>
+
+          {/* Setup instructions */}
+          {picked.setupSteps?.length > 0 && (
+            <Card padding={0} style={{ background: "var(--brand-soft)", borderColor: "color-mix(in srgb, var(--brand) 30%, transparent)" }}>
+              <div style={{ padding: "14px 18px", borderBottom: "1px solid color-mix(in srgb, var(--brand) 20%, transparent)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <span style={{ display: "inline-flex", color: "var(--brand-ink)" }}><G name="book" size={16}/></span>
+                  <h3 style={{ color: "var(--brand-ink)" }}>How to get your {picked.name} credentials</h3>
+                </div>
+                {picked.setupUrl && (
+                  <a href={picked.setupUrl} target="_blank" rel="noreferrer" style={{
+                    fontSize: 12, fontFamily: "var(--font-mono)", color: "var(--brand-ink)",
+                    display: "inline-flex", alignItems: "center", gap: 4, textDecoration: "underline",
+                  }}>
+                    Open dashboard <G name="arrow" size={12}/>
+                  </a>
+                )}
+              </div>
+              <ol style={{ padding: "14px 36px", margin: 0, color: "var(--brand-ink)", fontSize: 13, lineHeight: 1.65 }}>
+                {picked.setupSteps.map((step, i) => (<li key={i} style={{ marginBottom: 4 }}>{step}</li>))}
+              </ol>
+            </Card>
+          )}
 
           {(picked.secretKeys.length + picked.configKeys.length > 0) && (
             <Card padding={0}>
