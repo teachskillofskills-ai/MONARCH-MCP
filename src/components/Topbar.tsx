@@ -43,7 +43,6 @@ export default function Topbar({ username }: { username: string }) {
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
         <CommandPalette/>
         <Btn variant="ghost" size="sm" icon={<G name="bell" size={16}/>}><span/></Btn>
-        <Btn variant="ghost" size="sm" icon={<G name="book" size={16}/>}>Docs</Btn>
         <div style={{ width: 1, height: 24, background: "var(--border)", margin: "0 4px" }}/>
         <UserMenu username={username}/>
       </div>
