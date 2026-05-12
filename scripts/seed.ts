@@ -57,6 +57,19 @@ async function main() {
     }
   }
 
+  // Remove deprecated MCPs (CASCADE drops their secrets/config/tools)
+  const removeMcps: string[] = ["gemini-image"];
+  for (const slug of removeMcps) {
+    const r = db.prepare("DELETE FROM mcps WHERE slug = ?").run(slug);
+    if (r.changes > 0) console.log(`✗ Removed deprecated MCP '${slug}'`);
+  }
+  // Also remove deprecated templates from DB
+  const removeTemplates: string[] = ["gemini-image"];
+  for (const slug of removeTemplates) {
+    const r = db.prepare("DELETE FROM mcp_templates WHERE module = ?").run(slug);
+    if (r.changes > 0) console.log(`✗ Removed deprecated template '${slug}'`);
+  }
+
   // 1. Admin user
   const username = process.env.ADMIN_USERNAME || "monarch";
   const password = process.env.ADMIN_PASSWORD || "monarch";
@@ -191,13 +204,6 @@ async function main() {
       description: "Read/list/delete files in monarch-images bucket",
       template_slug: "blob-storage",
       secrets: { BLOB_READ_WRITE_TOKEN: s("BLOB_READ_WRITE_TOKEN") },
-    },
-    {
-      slug: "gemini-image",
-      name: "Gemini Image",
-      description: "Image generation via Gemini 2.5 Flash Image",
-      template_slug: "gemini-image",
-      secrets: { GEMINI_API_KEY: s("GEMINI_API_KEY") },
     },
     {
       slug: "openrouter-image",

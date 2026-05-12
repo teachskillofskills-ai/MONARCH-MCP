@@ -6,7 +6,6 @@ import searchConsole from "./search-console";
 import awr from "./awr";
 import keywordVolume from "./keyword-volume";
 import blobStorage from "./blob-storage";
-import geminiImage from "./gemini-image";
 import openrouterImage from "./openrouter-image";
 import openai from "./openai";
 import anthropic from "./anthropic";
@@ -26,7 +25,7 @@ import type { Template } from "./types";
 const ALL: Template[] = [
   // Built-in (already seeded)
   linkedinAds, metaAds, googleAds, ga4, searchConsole,
-  awr, keywordVolume, blobStorage, geminiImage, openrouterImage,
+  awr, keywordVolume, blobStorage, openrouterImage,
   // Add-ons (available in marketplace)
   openai, anthropic, slack, notion, airtable, github,
   stripe, razorpay, hubspot, mailchimp, sendgrid, resend, replicate,
