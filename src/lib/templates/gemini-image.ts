@@ -20,16 +20,16 @@ async function geminiApi(ctx: Ctx, model: string, body: unknown) {
 
 const tools: ToolDef[] = [
   { name: "gemini_get_server_policy", description: "Gemini Image MCP policy.", inputSchema: { type: "object", properties: {} } },
-  { name: "gemini_image_generate", description: "Generate an image from a text prompt using Gemini 2.5 Flash Image.", inputSchema: { type: "object", properties: { prompt: { type: "string" }, model: { type: "string", description: "Default: gemini-2.5-flash-image-preview" } }, required: ["prompt"] } },
+  { name: "gemini_image_generate", description: "Generate an image from a text prompt using Gemini 2.5 Flash Image.", inputSchema: { type: "object", properties: { prompt: { type: "string" }, model: { type: "string", description: "Default: gemini-2.5-flash-image" } }, required: ["prompt"] } },
 ];
 
 const handlers: Record<string, ToolHandler> = {
   gemini_get_server_policy: async () => ({
     api_family: "Google Gemini API",
-    default_model: "gemini-2.5-flash-image-preview",
+    default_model: "gemini-2.5-flash-image",
   }),
   gemini_image_generate: async (args, ctx) => {
-    const model = String(args.model || "gemini-2.5-flash-image-preview");
+    const model = String(args.model || "gemini-2.5-flash-image");
     const body = {
       contents: [{ parts: [{ text: String(args.prompt) }] }],
       generationConfig: { responseModalities: ["IMAGE"] },
