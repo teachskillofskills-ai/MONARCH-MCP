@@ -95,47 +95,16 @@ export default function LoginPage() {
         </form>
       </div>
 
-      {/* Right — visual side */}
+      {/* Right — minimal dark panel */}
       <div style={{
-        background: "var(--ink-900)", color: "#fff", padding: 56,
-        display: "flex", flexDirection: "column", gap: 40, position: "relative", overflow: "hidden",
+        background: "var(--ink-900)", position: "relative", overflow: "hidden",
       }}>
         <div style={{
           position: "absolute", inset: 0, opacity: 0.06,
           backgroundImage: "linear-gradient(var(--brand) 1px, transparent 1px), linear-gradient(90deg, var(--brand) 1px, transparent 1px)",
           backgroundSize: "32px 32px",
         }}/>
-        <div style={{ position: "relative", display: "flex", alignItems: "center", gap: 8, fontSize: 12, fontFamily: "var(--font-mono)", letterSpacing: "0.06em", textTransform: "uppercase", color: "rgba(255,255,255,0.7)" }}>
-          <span style={{ width: 6, height: 6, borderRadius: 999, background: "#7CFFB2", boxShadow: "0 0 0 4px rgba(124,255,178,0.18)" }}/>
-          Live · Local instance · port 4000
-        </div>
-        <div style={{ position: "relative", marginTop: "auto" }}>
-          <h2 style={{ fontSize: 44, lineHeight: 1.05, fontWeight: 600, letterSpacing: "-0.025em", marginBottom: 24, maxWidth: 520 }}>
-            Reciprocity, in code.
-          </h2>
-          <p style={{ fontSize: 16, lineHeight: 1.55, color: "rgba(255,255,255,0.72)", maxWidth: 520, marginBottom: 32 }}>
-            MONARCH is the central nervous system for the MCPs we run on behalf of clients — auth, rotation, and observability under one roof. Plain controls. Measurable outcomes. No fluff.
-          </p>
-          <div style={{ display: "flex", gap: 32, fontFamily: "var(--font-mono)", fontSize: 12 }}>
-            <Stat n="10" label="MCPs in catalog"/>
-            <Stat n="∞" label="instances per template"/>
-            <Stat n="100%" label="locally controlled"/>
-          </div>
-        </div>
-        <div style={{ position: "relative", display: "flex", justifyContent: "space-between", fontSize: 11, fontFamily: "var(--font-mono)", color: "rgba(255,255,255,0.45)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-          <span>TechShu Digital · Kolkata · est. 2009</span>
-          <span>support@techshu.com</span>
-        </div>
       </div>
-    </div>
-  );
-}
-
-function Stat({ n, label }: { n: string; label: string }) {
-  return (
-    <div>
-      <div style={{ fontSize: 28, fontFamily: "var(--font-display)", fontWeight: 600, letterSpacing: "-0.02em" }}>{n}</div>
-      <div style={{ color: "rgba(255,255,255,0.55)" }}>{label}</div>
     </div>
   );
 }
