@@ -44,6 +44,19 @@ function s(key: string): string | undefined {
 async function main() {
   const db = getDb();
 
+  // 0. One-time slug migrations (idempotent — safe to run repeatedly)
+  const renames: [from: string, to: string, newName?: string][] = [
+    ["meta-swapna", "meta-ads", "Meta Ads"],
+  ];
+  for (const [from, to, newName] of renames) {
+    const oldExists = db.prepare("SELECT id FROM mcps WHERE slug = ?").get(from) as { id: number } | undefined;
+    const newExists = db.prepare("SELECT id FROM mcps WHERE slug = ?").get(to) as { id: number } | undefined;
+    if (oldExists && !newExists) {
+      db.prepare("UPDATE mcps SET slug = ?, name = COALESCE(?, name) WHERE id = ?").run(to, newName || null, oldExists.id);
+      console.log(`✓ Migrated MCP slug '${from}' → '${to}'`);
+    }
+  }
+
   // 1. Admin user
   const username = process.env.ADMIN_USERNAME || "monarch";
   const password = process.env.ADMIN_PASSWORD || "monarch";
@@ -102,9 +115,9 @@ async function main() {
       config: { LINKEDIN_API_VERSION: "202604" },
     },
     {
-      slug: "meta-swapna",
-      name: "Meta Ads — Swapna Dey",
-      description: "19 ad accounts (T2, Cloth Haus, Tata, Grasim, etc.)",
+      slug: "meta-ads",
+      name: "Meta Ads",
+      description: "Meta Marketing API — accounts, campaigns, adsets, ads, insights.",
       template_slug: "meta-ads",
       secrets: { META_ACCESS_TOKEN: s("META_ACCESS_TOKEN") },
       config: { META_GRAPH_API_VERSION: "v25.0" },
