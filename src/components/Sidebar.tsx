@@ -63,9 +63,10 @@ export default function Sidebar({ mcpCount, host }: { mcpCount: number; host?: s
       padding: "14px 12px 16px", display: "flex", flexDirection: "column",
       position: "sticky", top: 0, height: "100vh", overflow: "auto",
     }}>
-      <div style={{
+      <Link href="/dashboard" style={{
         display: "flex", alignItems: "center", gap: 10,
         padding: "6px 10px 16px", borderBottom: "1px solid var(--border)", marginBottom: 14,
+        textDecoration: "none", color: "inherit",
       }}>
         <div style={{
           width: 30, height: 30, borderRadius: 8, background: "var(--ink-900)",
@@ -77,7 +78,7 @@ export default function Sidebar({ mcpCount, host }: { mcpCount: number; host?: s
           <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 15, letterSpacing: "-0.02em" }}>MONARCH</div>
           <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "var(--fg-muted)", marginTop: 2 }}>MCP CONTROL · v0.2.0</div>
         </div>
-      </div>
+      </Link>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 14, flex: 1 }}>
         {groups.map((g) => (
