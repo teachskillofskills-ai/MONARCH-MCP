@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
-import Sidebar from "@/components/Sidebar";
-import Topbar from "@/components/Topbar";
+import AppShell from "@/components/AppShell";
 import { getCurrentUser } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 
@@ -17,17 +16,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const host = h.get("x-forwarded-host") || h.get("host") || "localhost:4000";
 
   return (
-    <div style={{
-      display: "grid",
-      gridTemplateColumns: "232px 1fr",
-      gridTemplateRows: "auto 1fr",
-      gridTemplateAreas: '"side top" "side main"',
-      minHeight: "100vh",
-      background: "var(--bg-muted)",
-    }}>
-      <Sidebar mcpCount={count} host={host}/>
-      <Topbar username={user.username}/>
-      <main style={{ gridArea: "main", overflow: "auto" }}>{children}</main>
-    </div>
+    <AppShell username={user.username} host={host} mcpCount={count}>
+      {children}
+    </AppShell>
   );
 }

@@ -59,10 +59,9 @@ export default function Sidebar({ mcpCount, host }: { mcpCount: number; host?: s
 
   return (
     <aside style={{
-      gridArea: "side",
       background: "var(--bg)", borderRight: "1px solid var(--border)",
       padding: "14px 12px 16px", display: "flex", flexDirection: "column",
-      position: "sticky", top: 0, height: "100vh", overflow: "auto",
+      height: "100vh", overflow: "auto", width: "100%",
     }}>
       <Link href="/dashboard" style={{
         display: "flex", alignItems: "center", gap: 10,

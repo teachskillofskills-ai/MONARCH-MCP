@@ -46,7 +46,8 @@ async function main() {
 
   // 0. One-time slug migrations (idempotent — safe to run repeatedly)
   const renames: [from: string, to: string, newName?: string][] = [
-    ["meta-swapna", "meta-ads", "Meta Ads"],
+    ["meta-swapna",  "meta-ads",        "Meta Ads"],
+    ["blob-storage", "monarch-storage", "Monarch Storage"],
   ];
   for (const [from, to, newName] of renames) {
     const oldExists = db.prepare("SELECT id FROM mcps WHERE slug = ?").get(from) as { id: number } | undefined;
@@ -199,9 +200,9 @@ async function main() {
       },
     },
     {
-      slug: "blob-storage",
-      name: "Vercel Blob — Monarch",
-      description: "Read/list/delete files in monarch-images bucket",
+      slug: "monarch-storage",
+      name: "Monarch Storage",
+      description: "Central file storage — browse via /storage or call as MCP.",
       template_slug: "blob-storage",
       secrets: { BLOB_READ_WRITE_TOKEN: s("BLOB_READ_WRITE_TOKEN") },
     },

@@ -80,19 +80,20 @@ export default function CommandPalette() {
     <>
       {/* Trigger — replaces the static placeholder pill in the topbar */}
       <button
+        className="topbar-search"
         onClick={() => setOpen(true)}
         style={{
           display: "flex", alignItems: "center", gap: 8,
           padding: "6px 10px",
           border: "1px solid var(--border)", borderRadius: 8,
-          background: "var(--ink-50)", width: 320,
+          background: "var(--ink-50)", width: 320, height: 36,
           color: "var(--fg-muted)", cursor: "pointer",
           fontFamily: "var(--font-body)", fontSize: 13, textAlign: "left",
         }}
       >
         <G name="search" size={14}/>
-        <span>Search MCPs, tools, pages…</span>
-        <span style={{ marginLeft: "auto", display: "flex", gap: 4 }}><KBD>⌘</KBD><KBD>K</KBD></span>
+        <span className="topbar-search-text">Search MCPs, tools, pages…</span>
+        <span className="topbar-kbd" style={{ marginLeft: "auto", display: "flex", gap: 4 }}><KBD>⌘</KBD><KBD>K</KBD></span>
       </button>
 
       {open && (

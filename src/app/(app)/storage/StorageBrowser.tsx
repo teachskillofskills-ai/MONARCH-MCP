@@ -296,7 +296,7 @@ export default function StorageBrowser() {
       </div>
 
       {/* Stats */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12 }}>
+      <div className="stat-grid-2" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12 }}>
         <Stat
           label="Total used"
           value={statsLoading && !stats ? "Calculating…" : (stats ? fmtBytes(stats.totalBytes) : "—")}

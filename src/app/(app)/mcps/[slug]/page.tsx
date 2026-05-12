@@ -66,7 +66,7 @@ export default async function McpDetailPage({ params }: { params: Promise<{ slug
         </div>
       </Card>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+      <div className="stat-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
         {/* Settings */}
         <Card padding={0}>
           <div style={{ padding: "14px 18px", borderBottom: "1px solid var(--border)" }}>

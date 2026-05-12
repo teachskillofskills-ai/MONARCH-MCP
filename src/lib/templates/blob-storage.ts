@@ -49,9 +49,9 @@ const handlers: Record<string, ToolHandler> = {
 
 const template: Template = {
   slug: "blob-storage",
-  name: "Vercel Blob Storage",
-  description: "Read/list/delete files in your Vercel Blob bucket.",
-  icon: "Vercel",
+  name: "Monarch Storage",
+  description: "Central file storage for Monarch — list, read metadata, delete blobs.",
+  icon: "MonarchStorage",
   category: "Storage",
   version: "1.0",
   auth: "Read-write token",

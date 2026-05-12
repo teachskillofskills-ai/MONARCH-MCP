@@ -73,13 +73,13 @@ export default async function SettingsPage() {
 
       {/* System */}
       <Section title="System" subtitle="Live database statistics">
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 14 }}>
+        <div className="stat-grid-4" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 14 }}>
           <Stat label="MCPs"        value={`${sys.active_mcp_count}/${sys.mcp_count}`} sub="active / total"/>
           <Stat label="Templates"   value={String(sys.template_count)} sub="loaded"/>
           <Stat label="Secrets"     value={String(sys.secret_count)}   sub="encrypted"/>
           <Stat label="Audit rows"  value={String(sys.audit_event_count)} sub="logged"/>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div className="stat-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
           <KV k="Database path" v={sys.database_path}/>
           <KV k="Database size" v={`${sys.database_size_kb.toLocaleString()} KB`}/>
           <KV k="Node version" v={sys.node_version}/>
@@ -106,7 +106,7 @@ export default async function SettingsPage() {
 
       {/* About */}
       <Section title="About" subtitle="">
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, fontSize: 13, color: "var(--fg-muted)", lineHeight: 1.5 }}>
+        <div className="stat-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, fontSize: 13, color: "var(--fg-muted)", lineHeight: 1.5 }}>
           <div>
             <strong style={{ color: "var(--fg)" }}>Project Monarch</strong> — single-user MCP control plane.
             Manage every MCP server you run from one place. Built for TechShu.

@@ -12,7 +12,10 @@ function getToken(): string {
     .prepare(
       `SELECT s.encrypted_value FROM mcp_secrets s
        JOIN mcps m ON m.id = s.mcp_id
-       WHERE m.slug = 'blob-storage' AND s.key = 'BLOB_READ_WRITE_TOKEN'`
+       WHERE m.slug IN ('monarch-storage', 'blob-storage')
+         AND s.key = 'BLOB_READ_WRITE_TOKEN'
+       ORDER BY (m.slug = 'monarch-storage') DESC
+       LIMIT 1`
     )
     .get() as { encrypted_value: string } | undefined;
   if (row) {
@@ -20,7 +23,7 @@ function getToken(): string {
   }
   const envToken = process.env.BLOB_READ_WRITE_TOKEN;
   if (envToken) return envToken;
-  throw new Error("Blob Storage not configured. Add the blob-storage MCP and set BLOB_READ_WRITE_TOKEN.");
+  throw new Error("Storage not configured. Add the Monarch Storage MCP and set BLOB_READ_WRITE_TOKEN.");
 }
 
 async function blobFetch(method: string, urlOrPath: string, init: RequestInit = {}) {

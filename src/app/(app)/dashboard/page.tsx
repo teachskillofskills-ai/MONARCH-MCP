@@ -36,7 +36,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
+      <div className="stat-grid-4" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
         <Stat label="Active MCPs" value={String(liveCount)} sub={`${mcps.length} total · ${mcps.length - liveCount} paused`} tone="success"/>
         <Stat label="Tools exposed" value={String(totalTools)} sub="across all MCPs" tone="brand"/>
         <Stat label="Templates" value={String(templates.length)} sub="ready to instantiate" tone="muted"/>
@@ -44,7 +44,7 @@ export default function DashboardPage() {
       </div>
 
       {/* MCPs table + activity placeholder */}
-      <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr", gap: 16 }}>
+      <div className="stat-grid-2" style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr", gap: 16 }}>
         <Card padding={0}>
           <div style={{ padding: "16px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid var(--border)" }}>
             <h3>Your MCPs</h3>

@@ -33,14 +33,14 @@ export default function LoginPage() {
   }
 
   return (
-    <div style={{
+    <div className="login-grid" style={{
       minHeight: "100vh",
       display: "grid",
       gridTemplateColumns: "1fr 1.1fr",
       background: "var(--bg)",
     }}>
       {/* Left — sign in panel */}
-      <div style={{ display: "grid", placeItems: "center", padding: 48 }}>
+      <div style={{ display: "grid", placeItems: "center", padding: "32px 24px" }}>
         <form onSubmit={submit} style={{ width: "100%", maxWidth: 380 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 40 }}>
             <div style={{ width: 32, height: 32, borderRadius: 8, background: "var(--ink-900)", display: "grid", placeItems: "center" }}>
@@ -95,8 +95,8 @@ export default function LoginPage() {
         </form>
       </div>
 
-      {/* Right — minimal dark panel */}
-      <div style={{
+      {/* Right — minimal dark panel (hidden on mobile) */}
+      <div className="login-visual" style={{
         background: "var(--ink-900)", position: "relative", overflow: "hidden",
       }}>
         <div style={{
