@@ -49,7 +49,33 @@ export default function StorageBrowser() {
   const [query, setQuery] = useState("");
   const [dragOver, setDragOver] = useState(false);
   const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
+  const [ctxMenu, setCtxMenu] = useState<
+    | { kind: "file"; item: BlobItem; x: number; y: number }
+    | { kind: "folder"; item: BlobFolder; x: number; y: number }
+    | null
+  >(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Close context menu on Escape or any click outside
+  useEffect(() => {
+    if (!ctxMenu) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setCtxMenu(null); };
+    const onClick = () => setCtxMenu(null);
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("click", onClick);
+    window.addEventListener("scroll", onClick, true);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("click", onClick);
+      window.removeEventListener("scroll", onClick, true);
+    };
+  }, [ctxMenu]);
+
+  function openCtxMenu(e: React.MouseEvent, kind: "file" | "folder", item: BlobItem | BlobFolder) {
+    e.preventDefault();
+    e.stopPropagation();
+    setCtxMenu({ kind, item, x: e.clientX, y: e.clientY } as Parameters<typeof setCtxMenu>[0]);
+  }
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -174,6 +200,23 @@ export default function StorageBrowser() {
       const j = await r.json();
       if (!r.ok) throw new Error(j.error || "Failed");
       await refresh();
+    } catch (e) { alert((e as Error).message); }
+    finally { setBusy(false); }
+  }
+
+  async function deleteFolder(folder: BlobFolder) {
+    const name = leaf(folder.pathname);
+    if (!confirm(`Delete folder "${name}" and ALL files inside it? This cannot be undone.`)) return;
+    setBusy(true);
+    try {
+      const r = await fetch("/api/storage/folder", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prefix: folder.pathname }),
+      });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error || "Failed");
+      await Promise.all([refresh(), refreshStats()]);
     } catch (e) { alert((e as Error).message); }
     finally { setBusy(false); }
   }
@@ -369,6 +412,7 @@ export default function StorageBrowser() {
             copiedUrl={copiedUrl}
             onRename={renameOne}
             onDelete={deleteOne}
+            onCtxMenu={openCtxMenu}
           />
         ) : (
           <GridView
@@ -384,6 +428,7 @@ export default function StorageBrowser() {
             copiedUrl={copiedUrl}
             onRename={renameOne}
             onDelete={deleteOne}
+            onCtxMenu={openCtxMenu}
           />
         )}
       </Card>
@@ -396,6 +441,49 @@ export default function StorageBrowser() {
           cursor: "zoom-out",
         }}>
           <img src={previewUrl} alt="" style={{ maxWidth: "92vw", maxHeight: "88vh", borderRadius: 8, boxShadow: "var(--shadow-xl)" }}/>
+        </div>
+      )}
+
+      {/* Context menu (right-click) */}
+      {ctxMenu && (
+        <div
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            position: "fixed", left: Math.min(ctxMenu.x, window.innerWidth - 220),
+            top: Math.min(ctxMenu.y, window.innerHeight - 280), zIndex: 200,
+            minWidth: 200, padding: 4,
+            background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 10,
+            boxShadow: "var(--shadow-xl)",
+            animation: "monarch-pop 100ms ease-out",
+          }}
+        >
+          <div style={{
+            padding: "8px 12px 6px", fontSize: 11, color: "var(--fg-muted)",
+            fontFamily: "var(--font-mono)", letterSpacing: "0.04em", textTransform: "uppercase",
+            overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+            borderBottom: "1px solid var(--border)", marginBottom: 4,
+          }}>
+            {leaf(ctxMenu.item.pathname)}
+          </div>
+          {ctxMenu.kind === "folder" ? (
+            <>
+              <CtxItem icon="arrow"  label="Open"   onClick={() => { enterFolder((ctxMenu.item as BlobFolder).pathname); setCtxMenu(null); }}/>
+              <CtxDivider/>
+              <CtxItem icon="trash"  label="Delete folder (and all contents)" danger onClick={() => { deleteFolder(ctxMenu.item as BlobFolder); setCtxMenu(null); }}/>
+            </>
+          ) : (
+            <>
+              {isImage((ctxMenu.item as BlobItem).pathname, (ctxMenu.item as BlobItem).contentType) && (
+                <CtxItem icon="eye" label="Preview" onClick={() => { setPreviewUrl((ctxMenu.item as BlobItem).url); setCtxMenu(null); }}/>
+              )}
+              <CtxItem icon="copy"     label="Copy URL"   onClick={() => { copyUrl((ctxMenu.item as BlobItem).url); setCtxMenu(null); }}/>
+              <CtxItem icon="download" label="Download"   onClick={() => { window.location.href = `/api/storage/file?url=${encodeURIComponent((ctxMenu.item as BlobItem).url)}`; setCtxMenu(null); }}/>
+              <CtxItem icon="link"     label="Open in new tab" onClick={() => { window.open((ctxMenu.item as BlobItem).url, "_blank"); setCtxMenu(null); }}/>
+              <CtxDivider/>
+              <CtxItem icon="edit"     label="Rename"     onClick={() => { renameOne(ctxMenu.item as BlobItem); setCtxMenu(null); }}/>
+              <CtxItem icon="trash"    label="Delete"     danger onClick={() => { deleteOne(ctxMenu.item as BlobItem); setCtxMenu(null); }}/>
+            </>
+          )}
         </div>
       )}
 
@@ -469,13 +557,14 @@ function EmptyState({ onUpload, hasQuery }: { onUpload: () => void; hasQuery: bo
 
 function ListView({
   prefix, folders, blobs, selected, onToggleSelect, onToggleSelectAll,
-  onEnterFolder, onUp, onPreview, onCopyUrl, copiedUrl, onRename, onDelete,
+  onEnterFolder, onUp, onPreview, onCopyUrl, copiedUrl, onRename, onDelete, onCtxMenu,
 }: {
   prefix: string; folders: BlobFolder[]; blobs: BlobItem[];
   selected: Set<string>; onToggleSelect: (u: string) => void; onToggleSelectAll: () => void;
   onEnterFolder: (p: string) => void; onUp: () => void; onPreview: (u: string) => void;
   onCopyUrl: (u: string) => void; copiedUrl: string | null;
   onRename: (b: BlobItem) => void; onDelete: (b: BlobItem) => void;
+  onCtxMenu: (e: React.MouseEvent, kind: "file" | "folder", item: BlobItem | BlobFolder) => void;
 }) {
   const allSelected = blobs.length > 0 && selected.size === blobs.length;
   return (
@@ -502,7 +591,9 @@ function ListView({
           </tr>
         )}
         {folders.map((f) => (
-          <tr key={f.pathname} style={{ cursor: "pointer" }} onClick={() => onEnterFolder(f.pathname)}
+          <tr key={f.pathname} style={{ cursor: "pointer" }}
+              onClick={() => onEnterFolder(f.pathname)}
+              onContextMenu={(e) => onCtxMenu(e, "folder", f)}
               onMouseEnter={(e) => (e.currentTarget.style.background = "var(--ink-50)")}
               onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
             <td/>
@@ -520,6 +611,7 @@ function ListView({
           return (
             <tr key={b.url}
                 style={{ background: isSel ? "var(--brand-soft)" : "transparent" }}
+                onContextMenu={(e) => onCtxMenu(e, "file", b)}
                 onMouseEnter={(e) => { if (!isSel) e.currentTarget.style.background = "var(--ink-50)"; }}
                 onMouseLeave={(e) => { if (!isSel) e.currentTarget.style.background = "transparent"; }}>
               <td style={{ paddingLeft: 16, textAlign: "center" }}>
@@ -553,13 +645,14 @@ function ListView({
 
 function GridView({
   prefix, folders, blobs, selected, onToggleSelect,
-  onEnterFolder, onUp, onPreview, onCopyUrl, copiedUrl, onRename, onDelete,
+  onEnterFolder, onUp, onPreview, onCopyUrl, copiedUrl, onRename, onDelete, onCtxMenu,
 }: {
   prefix: string; folders: BlobFolder[]; blobs: BlobItem[];
   selected: Set<string>; onToggleSelect: (u: string) => void;
   onEnterFolder: (p: string) => void; onUp: () => void; onPreview: (u: string) => void;
   onCopyUrl: (u: string) => void; copiedUrl: string | null;
   onRename: (b: BlobItem) => void; onDelete: (b: BlobItem) => void;
+  onCtxMenu: (e: React.MouseEvent, kind: "file" | "folder", item: BlobItem | BlobFolder) => void;
 }) {
   return (
     <div style={{ padding: 16, display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: 12 }}>
@@ -570,7 +663,10 @@ function GridView({
         </button>
       )}
       {folders.map((f) => (
-        <button key={f.pathname} onClick={() => onEnterFolder(f.pathname)} style={tile()}>
+        <button key={f.pathname}
+          onClick={() => onEnterFolder(f.pathname)}
+          onContextMenu={(e) => onCtxMenu(e, "folder", f)}
+          style={tile()}>
           <div style={{ height: 120, display: "grid", placeItems: "center" }}><FolderIcon size={64}/></div>
           <div style={tileName()}>{leaf(f.pathname)}</div>
           <div style={tileMeta()}>folder</div>
@@ -580,13 +676,15 @@ function GridView({
         const isSel = selected.has(b.url);
         const img = isImage(b.pathname, b.contentType);
         return (
-          <div key={b.url} style={{
-            position: "relative", borderRadius: 10,
-            border: `1px solid ${isSel ? "var(--brand)" : "var(--border)"}`,
-            background: isSel ? "var(--brand-soft)" : "var(--bg)",
-            overflow: "hidden", display: "flex", flexDirection: "column",
-            transition: "all 120ms",
-          }}>
+          <div key={b.url}
+            onContextMenu={(e) => onCtxMenu(e, "file", b)}
+            style={{
+              position: "relative", borderRadius: 10,
+              border: `1px solid ${isSel ? "var(--brand)" : "var(--border)"}`,
+              background: isSel ? "var(--brand-soft)" : "var(--bg)",
+              overflow: "hidden", display: "flex", flexDirection: "column",
+              transition: "all 120ms",
+            }}>
             <input type="checkbox" checked={isSel} onChange={() => onToggleSelect(b.url)}
               style={{
                 position: "absolute", top: 8, left: 8, width: "auto", margin: 0, zIndex: 2,
@@ -690,6 +788,28 @@ function FileIcon({ name, size = 36 }: { name: string; size?: number }) {
       {ext}
     </div>
   );
+}
+
+function CtxItem({ icon, label, onClick, danger }: { icon: string; label: string; onClick: () => void; danger?: boolean }) {
+  return (
+    <button onClick={onClick} style={{
+      display: "flex", alignItems: "center", gap: 10, width: "100%",
+      padding: "8px 10px", borderRadius: 6, border: 0, cursor: "pointer",
+      background: "transparent", textAlign: "left",
+      color: danger ? "var(--danger)" : "var(--fg)",
+      fontSize: 13, fontFamily: "var(--font-body)",
+    }}
+    onMouseEnter={(e) => { e.currentTarget.style.background = danger ? "color-mix(in srgb, var(--danger) 8%, transparent)" : "var(--ink-50)"; }}
+    onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+    >
+      <span style={{ display: "inline-flex", color: danger ? "var(--danger)" : "var(--fg-muted)" }}><G name={icon} size={14}/></span>
+      {label}
+    </button>
+  );
+}
+
+function CtxDivider() {
+  return <div style={{ height: 1, background: "var(--border)", margin: "4px 4px" }}/>;
 }
 
 function IconBtn({ label, icon, onClick, danger, highlight }: { label: string; icon: string; onClick?: () => void; danger?: boolean; highlight?: boolean }) {
