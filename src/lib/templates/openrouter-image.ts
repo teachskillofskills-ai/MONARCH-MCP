@@ -24,18 +24,18 @@ async function orApi(ctx: Ctx, body: unknown) {
 
 const tools: ToolDef[] = [
   { name: "openrouter_get_server_policy", description: "OpenRouter Image MCP policy.", inputSchema: { type: "object", properties: {} } },
-  { name: "openrouter_image_generate", description: "Generate an image via an OpenRouter image-capable model.", inputSchema: { type: "object", properties: { prompt: { type: "string" }, model: { type: "string", description: "Default: google/gemini-2.5-flash-image-preview:free" } }, required: ["prompt"] } },
+  { name: "openrouter_image_generate", description: "Generate an image via an OpenRouter image-capable model.", inputSchema: { type: "object", properties: { prompt: { type: "string" }, model: { type: "string", description: "Default: google/gemini-2.5-flash-image" } }, required: ["prompt"] } },
   { name: "openrouter_chat", description: "General chat completion via any OpenRouter model.", inputSchema: { type: "object", properties: { prompt: { type: "string" }, model: { type: "string" }, system: { type: "string" } }, required: ["prompt"] } },
 ];
 
 const handlers: Record<string, ToolHandler> = {
   openrouter_get_server_policy: async () => ({
     api_family: "OpenRouter (Chat Completions)",
-    default_image_model: "google/gemini-2.5-flash-image-preview:free",
+    default_image_model: "google/gemini-2.5-flash-image",
   }),
   openrouter_image_generate: async (args, ctx) => {
     return orApi(ctx, {
-      model: args.model || "google/gemini-2.5-flash-image-preview:free",
+      model: args.model || "google/gemini-2.5-flash-image",
       messages: [{ role: "user", content: String(args.prompt) }],
       modalities: ["image", "text"],
     });
