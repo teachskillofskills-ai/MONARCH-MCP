@@ -13,6 +13,7 @@ const ROUTE_META: Record<string, { title: string; crumbs: string[] }> = {
   "/market":       { title: "MCPs Add-Ons",  crumbs: ["MONARCH", "Add-Ons"] },
   "/studio":       { title: "Build your own MCP", crumbs: ["MONARCH", "Studio"] },
   "/customers":    { title: "Customers",     crumbs: ["MONARCH", "Customers"] },
+  "/storage":      { title: "Storage",       crumbs: ["MONARCH", "Storage"] },
   "/keys":         { title: "Key vault",     crumbs: ["MONARCH", "Vault"] },
   "/activity":     { title: "Activity",      crumbs: ["MONARCH", "Activity"] },
   "/settings":     { title: "Settings",      crumbs: ["MONARCH", "Settings"] },

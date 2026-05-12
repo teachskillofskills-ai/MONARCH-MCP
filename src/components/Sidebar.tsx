@@ -44,6 +44,7 @@ export default function Sidebar({ mcpCount, host }: { mcpCount: number; host?: s
       { href: "/customers", icon: <G name="users" size={16}/>, label: "Customers" },
     ]},
     { label: "Operate", items: [
+      { href: "/storage",  icon: <G name="cloud" size={16}/>,    label: "Storage" },
       { href: "/keys",     icon: <G name="key" size={16}/>,      label: "Key vault" },
       { href: "/activity", icon: <G name="activity" size={16}/>, label: "Activity" },
       { href: "/settings", icon: <G name="settings" size={16}/>, label: "Settings" },
