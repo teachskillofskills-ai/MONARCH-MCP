@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
   jar.set(`gauth_${state}`, JSON.stringify({ slug, redirectUri }), {
     httpOnly: true,
     sameSite: "lax",
-    secure: !host.startsWith("localhost"),
+    secure: baseUrl.startsWith("https://"),
     maxAge: 600, // 10 min to complete
     path: "/",
   });
