@@ -4,6 +4,7 @@ import { getSystemInfo } from "@/lib/system-info";
 import { Card, Pill, Btn, Avatar } from "@/components/ui";
 import { G } from "@/components/icons";
 import PasswordChangeForm from "@/components/PasswordChangeForm";
+import BulkGoogleAuth from "@/components/BulkGoogleAuth";
 
 export const dynamic = "force-dynamic";
 
@@ -43,6 +44,11 @@ export default async function SettingsPage() {
       {/* Password */}
       <Section title="Change password" subtitle="Updates the bcrypt hash on the user record. Logs you out of nothing — your current session stays valid.">
         <PasswordChangeForm/>
+      </Section>
+
+      {/* Bulk Google connection */}
+      <Section title="Google authentication" subtitle="Paste a refresh token once → it powers all Google MCPs (Ads, GA4, Search Console)">
+        <BulkGoogleAuth/>
       </Section>
 
       {/* Encryption */}

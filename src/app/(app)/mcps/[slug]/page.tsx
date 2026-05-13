@@ -14,14 +14,8 @@ import DeleteButton from "@/components/DeleteButton";
 
 export const dynamic = "force-dynamic";
 
-export default async function McpDetailPage({
-  params, searchParams,
-}: {
-  params: Promise<{ slug: string }>;
-  searchParams: Promise<{ google_connected?: string; google_error?: string }>;
-}) {
+export default async function McpDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const sp = await searchParams;
   const data = getMcpBySlug(slug);
   if (!data) notFound();
   const { mcp, template, secrets, config, tools } = data;
@@ -58,65 +52,34 @@ export default async function McpDetailPage({
         <DeleteButton slug={mcp.slug} name={mcp.name}/>
       </div>
 
-      {/* OAuth callback flash */}
-      {sp.google_connected && (
-        <div style={{
-          padding: "12px 14px", borderRadius: 10,
-          background: "color-mix(in srgb, var(--success) 10%, transparent)",
-          color: "var(--success)", fontSize: 13.5,
-          border: "1px solid color-mix(in srgb, var(--success) 30%, transparent)",
-          display: "flex", alignItems: "center", gap: 10,
-        }}>
-          <G name="check" size={18}/>
-          <span>
-            <strong>Connected!</strong> Refresh token saved.
-            {sp.google_connected !== "1" && <> Google account: <code>{sp.google_connected}</code></>}
-          </span>
-        </div>
-      )}
-      {sp.google_error && (
-        <div style={{
-          padding: "12px 14px", borderRadius: 10,
-          background: "color-mix(in srgb, var(--danger) 10%, transparent)",
-          color: "var(--danger)", fontSize: 13.5,
-          border: "1px solid color-mix(in srgb, var(--danger) 30%, transparent)",
-        }}>
-          Google sign-in failed: <code>{sp.google_error}</code>
-        </div>
-      )}
-
-      {/* Connect Google card (only on Google MCPs) */}
+      {/* Google auth status hint */}
       {isGoogle && (
         <Card style={{
-          background: googleConnected ? "var(--bg)" : "linear-gradient(135deg, #fff 0%, #f0f4ff 100%)",
-          border: googleConnected ? "1px solid var(--border)" : "1px solid color-mix(in srgb, var(--brand) 25%, transparent)",
+          background: googleConnected ? "var(--bg)" : "color-mix(in srgb, var(--warning) 6%, transparent)",
+          border: `1px solid ${googleConnected ? "var(--border)" : "color-mix(in srgb, var(--warning) 30%, transparent)"}`,
         }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 14, minWidth: 0 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, minWidth: 0 }}>
               <div style={{
-                width: 44, height: 44, borderRadius: 10,
-                background: googleConnected ? "color-mix(in srgb, var(--success) 12%, transparent)" : "var(--brand-soft)",
-                color: googleConnected ? "var(--success)" : "var(--brand-ink)",
+                width: 38, height: 38, borderRadius: 10,
+                background: googleConnected ? "color-mix(in srgb, var(--success) 12%, transparent)" : "color-mix(in srgb, var(--warning) 12%, transparent)",
+                color: googleConnected ? "var(--success)" : "var(--warning)",
                 display: "grid", placeItems: "center", flex: "0 0 auto",
               }}>
-                <svg width="22" height="22" viewBox="0 0 24 24"><path fill="#4285F4" d="M22 12.2c0-.7-.1-1.4-.2-2.1H12v4h5.6a4.8 4.8 0 0 1-2 3.1v2.6h3.3c1.9-1.8 3-4.4 3-7.6z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.7-2.4l-3.3-2.6a6 6 0 0 1-9-3.2H2.9v2.7A10 10 0 0 0 12 22z"/><path fill="#FBBC04" d="M6.4 13.8a6 6 0 0 1 0-3.6V7.5H2.9a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6.2a5.4 5.4 0 0 1 3.8 1.5l2.9-2.9A10 10 0 0 0 2.9 7.5l3.5 2.7c.8-2.5 3.1-4 5.6-4z"/></svg>
+                <G name={googleConnected ? "check" : "key"} size={18}/>
               </div>
-              <div style={{ minWidth: 0 }}>
-                <div style={{ fontSize: 15, fontWeight: 600 }}>
-                  {googleConnected ? "Google account connected" : "Connect Google account"}
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 600 }}>
+                  {googleConnected ? "Google authentication active" : "Google authentication needed"}
                 </div>
-                <div style={{ fontSize: 12.5, color: "var(--fg-muted)", marginTop: 2 }}>
+                <div style={{ fontSize: 12, color: "var(--fg-muted)", marginTop: 2 }}>
                   {googleConnected
-                    ? "Refresh token is saved and auto-renews on every API call."
-                    : "Sign in with Google to authorize this MCP — no manual OAuth Playground needed."}
+                    ? "Refresh token is saved. Tools will auto-refresh as needed."
+                    : "Add a refresh token in Settings → Google authentication to power all Google MCPs at once."}
                 </div>
               </div>
             </div>
-            <a href={`/api/google/start?mcp=${mcp.slug}`}>
-              <Btn variant={googleConnected ? "secondary" : "primary"} icon={<G name="link" size={14}/>}>
-                {googleConnected ? "Reconnect / switch account" : "Connect Google account"}
-              </Btn>
-            </a>
+            <Link href="/settings#google-auth"><Btn variant={googleConnected ? "secondary" : "primary"} icon={<G name="settings" size={14}/>}>Manage</Btn></Link>
           </div>
         </Card>
       )}
