@@ -5,11 +5,19 @@ import { getCurrentUser } from "@/lib/auth";
 import { getMcpBySlug } from "@/lib/mcps";
 import { buildAuthUrl, isGoogleTemplate } from "@/lib/google-oauth-flow";
 
-export async function GET(req: NextRequest) {
+async function publicBaseUrl(): Promise<string> {
+  if (process.env.PUBLIC_URL) return process.env.PUBLIC_URL.replace(/\/$/, "");
+  if (process.env.RENDER_EXTERNAL_URL) return process.env.RENDER_EXTERNAL_URL.replace(/\/$/, "");
   const h = await headers();
-  const host = h.get("x-forwarded-host") || h.get("host") || "localhost:4000";
-  const proto = h.get("x-forwarded-proto") || (host.startsWith("localhost") ? "http" : "https");
-  const baseUrl = `${proto}://${host}`;
+  const fwdHost = h.get("x-forwarded-host");
+  const host = fwdHost || h.get("host") || "localhost:4000";
+  const cleanHost = /^0\.0\.0\.0|^127\.0\.0\.1/.test(host) ? "localhost:4000" : host;
+  const proto = h.get("x-forwarded-proto") || (cleanHost.startsWith("localhost") ? "http" : "https");
+  return `${proto}://${cleanHost}`;
+}
+
+export async function GET(req: NextRequest) {
+  const baseUrl = await publicBaseUrl();
 
   if (!(await getCurrentUser())) {
     return NextResponse.redirect(new URL("/login", baseUrl));

@@ -6,10 +6,16 @@ import { getDb } from "@/lib/db";
 import { encrypt } from "@/lib/crypto";
 
 async function publicBaseUrl(): Promise<string> {
+  // Prefer explicitly configured public URL (Render sets RENDER_EXTERNAL_URL automatically)
+  if (process.env.PUBLIC_URL) return process.env.PUBLIC_URL.replace(/\/$/, "");
+  if (process.env.RENDER_EXTERNAL_URL) return process.env.RENDER_EXTERNAL_URL.replace(/\/$/, "");
   const h = await headers();
-  const host = h.get("x-forwarded-host") || h.get("host") || "localhost:4000";
-  const proto = h.get("x-forwarded-proto") || (host.startsWith("localhost") ? "http" : "https");
-  return `${proto}://${host}`;
+  const fwdHost = h.get("x-forwarded-host");
+  const host = fwdHost || h.get("host") || "localhost:4000";
+  // Skip 0.0.0.0 / internal binds — fall back to localhost
+  const cleanHost = /^0\.0\.0\.0|^127\.0\.0\.1/.test(host) ? "localhost:4000" : host;
+  const proto = h.get("x-forwarded-proto") || (cleanHost.startsWith("localhost") ? "http" : "https");
+  return `${proto}://${cleanHost}`;
 }
 
 async function back(mcpSlug: string | null, params: Record<string, string>): Promise<NextResponse> {
