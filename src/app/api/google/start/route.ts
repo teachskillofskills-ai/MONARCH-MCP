@@ -6,8 +6,13 @@ import { getMcpBySlug } from "@/lib/mcps";
 import { buildAuthUrl, isGoogleTemplate } from "@/lib/google-oauth-flow";
 
 export async function GET(req: NextRequest) {
+  const h = await headers();
+  const host = h.get("x-forwarded-host") || h.get("host") || "localhost:4000";
+  const proto = h.get("x-forwarded-proto") || (host.startsWith("localhost") ? "http" : "https");
+  const baseUrl = `${proto}://${host}`;
+
   if (!(await getCurrentUser())) {
-    return NextResponse.redirect(new URL("/login", req.url));
+    return NextResponse.redirect(new URL("/login", baseUrl));
   }
 
   const slug = req.nextUrl.searchParams.get("mcp");
@@ -20,10 +25,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: `'${data.mcp.template_slug}' is not a Google template` }, { status: 400 });
   }
 
-  const h = await headers();
-  const host = h.get("x-forwarded-host") || h.get("host") || "localhost:4000";
-  const proto = h.get("x-forwarded-proto") || (host.startsWith("localhost") ? "http" : "https");
-  const redirectUri = `${proto}://${host}/api/google/callback`;
+  const redirectUri = `${baseUrl}/api/google/callback`;
 
   const state = crypto.randomBytes(16).toString("hex");
 
