@@ -33,8 +33,19 @@ async function adsApi(ctx: Ctx, method: string, path: string, body?: unknown) {
   let parsed: unknown;
   try { parsed = text ? JSON.parse(text) : {}; } catch { parsed = { raw: text }; }
   if (!res.ok) {
-    const p = parsed as { error?: { message?: string } };
-    throw new Error(`Google Ads API ${res.status}: ${p?.error?.message || text}`);
+    type AdsError = {
+      error?: { message?: string; status?: string; details?: Array<{ errors?: Array<{ message?: string; errorCode?: Record<string, string> }>; requestId?: string }> };
+    };
+    const p = parsed as AdsError;
+    const baseMsg = p?.error?.message || text;
+    const inner = p?.error?.details?.[0]?.errors?.[0];
+    const innerMsg = inner?.message;
+    const innerCode = inner?.errorCode ? Object.entries(inner.errorCode).map(([k, v]) => `${k}=${v}`).join(",") : "";
+    throw new Error(
+      `Google Ads API ${res.status}: ${baseMsg}` +
+      (innerMsg ? ` | ${innerMsg}` : "") +
+      (innerCode ? ` [${innerCode}]` : "")
+    );
   }
   return parsed;
 }
